@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="303.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="am.controller.ListAddressController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="50.0" prefWidth="303.0">
+         <children>
+            <Text fill="#f20404" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" textAlignment="CENTER" wrappingWidth="162.13671875">
+               <font>
+                  <Font name="Times New Roman Bold" size="28.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
+      <ScrollPane prefHeight="448.0" prefWidth="303.0">
+         <content>
+            <VBox fx:id="listAddress" prefHeight="438.0" prefWidth="299.0" />
+         </content>
+      </ScrollPane>
+      <HBox alignment="CENTER" prefHeight="55.0" prefWidth="303.0">
+         <children>
+            <Button mnemonicParsing="false" prefHeight="36.0" prefWidth="211.0" text="Thêm Địa Chỉ Mới" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>
