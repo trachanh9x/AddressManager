@@ -24,24 +24,29 @@ import javafx.stage.Stage;
  * @author VINH
  */
 public class AddressManager extends Application {
-    public static Stage primaryStage;
-    public static Address address;
+    private static Stage primaryStage;
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
         this.primaryStage.getIcons().add(new Image("/am/Home.png"));
         this.primaryStage.setTitle("Address Manager");
+        initRootLayout();
+    }
+    public static Stage getStage() {
+        return primaryStage;
+    }
+    private void initRootLayout() {
         try {
-            FXMLLoader load = new FXMLLoader();
-            load.setLocation(AddressManager.class.getResource("/am/view/ListAddress.fxml"));
-            Scene scene = new Scene(load.load());
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AddressManager.class.getResource("/am/view/ListAddress.fxml"));
+            Scene scene = new Scene(loader.load());
             primaryStage.setScene(scene);
             primaryStage.show();
+            
         } catch (IOException ex) {
-            Logger.getLogger(AddressManager.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
-
     /**
      * @param args the command line arguments
      */

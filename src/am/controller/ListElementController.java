@@ -38,7 +38,7 @@ public class ListElementController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         initChoiceBox();
-        address = AddressManager.address;
+        address = ListAddressController.getAddress();
         diaChi.setText(address.getDiaChi());
         phuong.setText(address.getPhuong());
         quan.setText(address.getQuan());
