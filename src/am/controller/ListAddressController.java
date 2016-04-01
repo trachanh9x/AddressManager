@@ -44,10 +44,10 @@ public class ListAddressController implements Initializable {
     public void addAddressData(){
         for (int i =0; i<8;i++){
             Address address = new Address();
-            address.setDiaChi("ababkas");
-            address.setPhuong("aiaiaiui");
-            address.setQuan("iiiii");
-            address.setTinh("uuuu");
+            address.setDiaChi("ababkas" + i);
+            address.setPhuong("aiaiaiui" +i);
+            address.setQuan("iiiii" + i);
+            address.setTinh("uuuu" + i);
             addressData.add(address);
         }
     }

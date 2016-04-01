@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -28,6 +29,8 @@ public class AddressManager extends Application {
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
+        this.primaryStage.getIcons().add(new Image("/am/Home.png"));
+        this.primaryStage.setTitle("Address Manager");
         try {
             FXMLLoader load = new FXMLLoader();
             load.setLocation(AddressManager.class.getResource("/am/view/ListAddress.fxml"));
