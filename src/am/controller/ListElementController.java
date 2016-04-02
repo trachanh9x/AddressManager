@@ -21,8 +21,6 @@ import javafx.scene.text.Text;
  */
 public class ListElementController implements Initializable {
     @FXML
-    private ChoiceBox<String> choiceBox;
-    @FXML
     private Text diaChi;
     @FXML
     private Text phuong;
@@ -31,13 +29,15 @@ public class ListElementController implements Initializable {
     @FXML
     private Text tinh;
     private Address address = new Address();
+    @FXML
+    private ChoiceBox<?> choiceBox;
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        initChoiceBox();
+        
         address = ListAddressController.getAddress();
         diaChi.setText(address.getDiaChi());
         phuong.setText(address.getPhuong());
@@ -45,9 +45,7 @@ public class ListElementController implements Initializable {
         tinh.setText(address.getTinh());
         
     }   
-    private void initChoiceBox(){
-        choiceBox.getItems().addAll("Xoa" , "Sua");
-    }
+    
 
 
 }

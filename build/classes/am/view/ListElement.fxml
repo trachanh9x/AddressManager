@@ -8,8 +8,8 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="113.0" prefWidth="285.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="am.controller.ListElementController">
   <columnConstraints>
-    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="0.0" prefWidth="1.0" />
+    <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="160.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="1.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -19,7 +19,7 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Text fx:id="diaChi" strokeType="OUTSIDE" strokeWidth="0.0" text="jakjbjkdbjbajbk" wrappingWidth="192.13671875">
+      <Text fx:id="diaChi" strokeType="OUTSIDE" strokeWidth="0.0" text="jakjbjkdbjbajbk" wrappingWidth="205.13671875">
          <font>
             <Font name="System Bold" size="13.0" />
          </font>
@@ -27,7 +27,7 @@
             <Insets left="15.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="phuong" strokeType="OUTSIDE" strokeWidth="0.0" text="auuauuhaoae" wrappingWidth="193.13671875" GridPane.rowIndex="1">
+      <Text fx:id="phuong" strokeType="OUTSIDE" strokeWidth="0.0" text="auuauuhaoae" wrappingWidth="205.13671875" GridPane.rowIndex="1">
          <font>
             <Font size="14.0" />
          </font>
@@ -35,17 +35,13 @@
             <Insets left="15.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="quan" strokeType="OUTSIDE" strokeWidth="0.0" text="ajsaohsiohaodiahd" wrappingWidth="192.13671875" GridPane.rowIndex="2">
+      <Text fx:id="quan" strokeType="OUTSIDE" strokeWidth="0.0" text="ajsaohsiohaodiahd" wrappingWidth="205.13671875" GridPane.rowIndex="2">
          <GridPane.margin>
             <Insets left="15.0" />
          </GridPane.margin></Text>
-      <Text fx:id="tinh" strokeType="OUTSIDE" strokeWidth="0.0" text="ajnsaodoadoiao" wrappingWidth="191.13671875" GridPane.rowIndex="3">
+      <Text fx:id="tinh" strokeType="OUTSIDE" strokeWidth="0.0" text="ajnsaodoadoiao" wrappingWidth="204.13671875" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="15.0" />
          </GridPane.margin></Text>
-      <ChoiceBox fx:id="choiceBox" prefHeight="0.0" prefWidth="39.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <GridPane.margin>
-            <Insets right="15.0" />
-         </GridPane.margin></ChoiceBox>
    </children>
 </GridPane>

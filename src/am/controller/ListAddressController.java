@@ -46,6 +46,7 @@ public class ListAddressController implements Initializable {
     }    
 
     public void addAddressData(){
+        addressData.clear();
         for (int i =0; i<8;i++){
             Address address = new Address();
             address.setDiaChi("ababkas" + i);
@@ -59,6 +60,7 @@ public class ListAddressController implements Initializable {
         return address;
     }
     public void initListAddress() {
+        listAddress.getChildren().clear();
         for (int i = 0; i<addressData.size() ;i++){
             try {
                 this.address = addressData.get(i);
@@ -70,6 +72,7 @@ public class ListAddressController implements Initializable {
                 Logger.getLogger(ListAddressController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
     }
 
     @FXML
