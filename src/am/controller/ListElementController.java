@@ -29,8 +29,6 @@ public class ListElementController implements Initializable {
     @FXML
     private Text tinh;
     private Address address = new Address();
-    @FXML
-    private ChoiceBox<?> choiceBox;
     /**
      * Initializes the controller class.
      */
