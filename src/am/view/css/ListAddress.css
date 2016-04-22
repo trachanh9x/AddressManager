@@ -5,4 +5,17 @@
 .mainFxmlClass {
 
 }
-
+#topBox {
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #ff0000;
+}
+#elementPane{
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #cccccc;
+}
+.button{
+    -fx-background-color: linear-gradient(#ff0000, #ff0000 );
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}

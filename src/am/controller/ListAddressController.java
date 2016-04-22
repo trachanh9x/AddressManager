@@ -68,7 +68,7 @@ public class ListAddressController implements Initializable {
                 GridPane pane = loader.load();
                 ListElementController controller = loader.getController();
                 controller.initData(addressData.get(i));
-                Button bt = new Button("remove");
+                Button bt = new Button("X");
                 pane.getChildren().add(bt);
                 pane.setConstraints(bt, 3, 1);
                 bt.setOnAction(e -> {

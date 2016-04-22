@@ -8,5 +8,6 @@
 #searchText {
     -fx-background-image:url('search_icon.png');
     -fx-background-repeat: no-repeat;
-    -fx-background-position:right;
+    -fx-background-position:right center;
+    -fx-background-size: contain;
 }

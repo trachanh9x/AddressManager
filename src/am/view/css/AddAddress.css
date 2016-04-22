@@ -3,5 +3,14 @@
  */
 
 .mainFxmlClass {
-
+    
+}
+.textField {
+    -fx-background-color: transparent;
+    -fx-background-radius: 2.0;
+    -fx-padding: 0.5em 0.5em 0.5em 0.1em;
+    -fx-border-width: 0 0 2 0;
+    -fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+    -fx-prompt-text-fill: derive(black,50%);
+    -fx-border-color: #cccccc;
 }
