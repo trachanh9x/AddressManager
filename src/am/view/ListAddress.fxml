@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -13,7 +14,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="50.0" prefWidth="303.0">
          <children>
-            <Text fill="#f20404" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" textAlignment="CENTER" wrappingWidth="162.13671875">
+            <Text fill="#f20404" strokeType="OUTSIDE" strokeWidth="0.0" text="Địa Chỉ" textAlignment="CENTER" wrappingWidth="292.13671875">
                <font>
                   <Font name="Times New Roman Bold" size="28.0" />
                </font>

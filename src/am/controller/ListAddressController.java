@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -33,7 +34,7 @@ public class ListAddressController implements Initializable {
     @FXML
     private VBox listAddress;
     private ObservableList<Address> addressData = FXCollections.observableArrayList();
-    private static Address address = new Address();
+    //private static Address address = new Address();
 
     /**
      * Initializes the controller class.
@@ -45,7 +46,7 @@ public class ListAddressController implements Initializable {
         initListAddress();
     }    
 
-    public void addAddressData(){
+    private void addAddressData(){
         addressData.clear();
         for (int i =0; i<8;i++){
             Address address = new Address();
@@ -56,16 +57,24 @@ public class ListAddressController implements Initializable {
             addressData.add(address);
         }
     }
-    public static Address getAddress(){
+    /*public static Address getAddress(){
         return address;
-    }
-    public void initListAddress() {
+    }*/
+    private void initListAddress() {
         listAddress.getChildren().clear();
         for (int i = 0; i<addressData.size() ;i++){
             try {
-                this.address = addressData.get(i);
-                FXMLLoader load = new FXMLLoader(getClass().getResource("/am/view/ListElement.fxml"));
-                GridPane pane = load.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/ListElement.fxml"));
+                GridPane pane = loader.load();
+                ListElementController controller = loader.getController();
+                controller.initData(addressData.get(i));
+                Button bt = new Button("remove");
+                pane.getChildren().add(bt);
+                pane.setConstraints(bt, 3, 1);
+                bt.setOnAction(e -> {
+                    listAddress.getChildren().remove(pane);
+                    addressData.remove(controller.getData());
+                        });
                 listAddress.getChildren().add(pane);
                 
             } catch (IOException ex) {

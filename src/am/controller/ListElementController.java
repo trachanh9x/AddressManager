@@ -28,7 +28,7 @@ public class ListElementController implements Initializable {
     private Text quan;
     @FXML
     private Text tinh;
-    private Address address = new Address();
+    private Address addr = new Address();
     /**
      * Initializes the controller class.
      */
@@ -36,13 +36,23 @@ public class ListElementController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
-        address = ListAddressController.getAddress();
+        /*address = ListAddressController.getAddress();
+        diaChi.setText(address.getDiaChi());
+        phuong.setText(address.getPhuong());
+        quan.setText(address.getQuan());
+        tinh.setText(address.getTinh());*/
+        
+    }
+    public void initData( Address address){
+        addr = address;
         diaChi.setText(address.getDiaChi());
         phuong.setText(address.getPhuong());
         quan.setText(address.getQuan());
         tinh.setText(address.getTinh());
-        
-    }   
+    }
+    public Address getData(){
+        return addr;
+    }
     
 
 
