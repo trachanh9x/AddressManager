@@ -10,4 +10,5 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position:right center;
     -fx-background-size: contain;
+    -fx-border-color: #ff0000;
 }

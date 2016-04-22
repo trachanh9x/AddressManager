@@ -23,7 +23,7 @@
       <HBox alignment="CENTER" prefHeight="54.0" prefWidth="303.0">
          <children>
             <TextField fx:id="searchText" prefHeight="39.0" prefWidth="235.0" promptText="Tìm Kiếm" stylesheets="@css/SearchAddress.css" />
-            <Button mnemonicParsing="false" onAction="#handleButtonX" prefHeight="35.0" prefWidth="30.0" stylesheets="@css/ListAddress.css" text="X" textAlignment="CENTER">
+            <Button mnemonicParsing="false" onAction="#handleButtonX" prefHeight="31.0" prefWidth="12.0" stylesheets="@css/ListAddress.css" text="X" textAlignment="CENTER">
                <HBox.margin>
                   <Insets left="10.0" right="10.0" />
                </HBox.margin>
