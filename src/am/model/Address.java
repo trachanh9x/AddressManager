@@ -12,44 +12,44 @@ import javafx.beans.property.SimpleStringProperty;
  * @author VINH
  */
 public class Address {
-    private SimpleStringProperty diaChi = new SimpleStringProperty();
-    private SimpleStringProperty phuong = new SimpleStringProperty();
-    private SimpleStringProperty quan = new SimpleStringProperty();
-    private SimpleStringProperty tinh = new SimpleStringProperty();
+    private SimpleStringProperty number = new SimpleStringProperty();
+    private SimpleStringProperty street = new SimpleStringProperty();
+    private SimpleStringProperty district = new SimpleStringProperty();
+    private SimpleStringProperty city = new SimpleStringProperty();
 
-    public void setDiaChi(String diaChi) {
-        this.diaChi.set(diaChi);
+    public void setNumber(String address) {
+        this.number.set(address);
     }
 
-    public void setPhuong(String phuong) {
-        this.phuong.set(phuong);
+    public void setStreet(String street) {
+        this.street.set(street);
     }
 
-    public void setQuan(String quan) {
-        this.quan.set(quan);
+    public void setDistrict(String district) {
+        this.district.set(district);
     }
 
-    public void setTinh(String tinh) {
-        this.tinh.set(tinh);
+    public void setCity(String city) {
+        this.city.set(city);
     }
 
     
     
     
-    public String getDiaChi() {
-        return diaChi.get();
+    public String getNumber() {
+        return number.get();
     }
 
-    public String getPhuong() {
-        return phuong.get();
+    public String getStreet() {
+        return street.get();
     }
 
-    public String getQuan() {
-        return quan.get();
+    public String getDistrict() {
+        return district.get();
     }
 
-    public String getTinh() {
-        return tinh.get();
+    public String getCity() {
+        return city.get();
     }
     
     

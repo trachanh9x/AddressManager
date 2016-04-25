@@ -21,13 +21,13 @@ import javafx.scene.text.Text;
  */
 public class ListElementController implements Initializable {
     @FXML
-    private Text diaChi;
+    private Text number;
     @FXML
-    private Text phuong;
+    private Text street;
     @FXML
-    private Text quan;
+    private Text district;
     @FXML
-    private Text tinh;
+    private Text city;
     private Address addr = new Address();
     /**
      * Initializes the controller class.
@@ -37,18 +37,18 @@ public class ListElementController implements Initializable {
         // TODO
         
         /*address = ListAddressController.getAddress();
-        diaChi.setText(address.getDiaChi());
-        phuong.setText(address.getPhuong());
-        quan.setText(address.getQuan());
-        tinh.setText(address.getTinh());*/
+        address.setText(address.getDiaChi());
+        street.setText(address.getPhuong());
+        district.setText(address.getQuan());
+        city.setText(address.getTinh());*/
         
     }
     public void initData( Address address){
         addr = address;
-        diaChi.setText(address.getDiaChi());
-        phuong.setText(address.getPhuong());
-        quan.setText(address.getQuan());
-        tinh.setText(address.getTinh());
+        number.setText(address.getNumber());
+        street.setText(address.getStreet());
+        district.setText(address.getDistrict());
+        city.setText(address.getCity());
     }
     public Address getData(){
         return addr;

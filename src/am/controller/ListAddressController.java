@@ -50,10 +50,10 @@ public class ListAddressController implements Initializable {
         addressData.clear();
         for (int i =0; i<8;i++){
             Address address = new Address();
-            address.setDiaChi("ababkas" + i);
-            address.setPhuong("aiaiaiui" +i);
-            address.setQuan("iiiii" + i);
-            address.setTinh("uuuu" + i);
+            address.setNumber("ababkas" + i);
+            address.setStreet("aiaiaiui" +i);
+            address.setDistrict("iiiii" + i);
+            address.setCity("uuuu" + i);
             addressData.add(address);
         }
     }
