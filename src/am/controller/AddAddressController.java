@@ -25,13 +25,13 @@ import javafx.scene.input.MouseEvent;
  */
 public class AddAddressController implements Initializable {
     @FXML
-    private TextField tinhField;
+    private TextField cityField;
     @FXML
-    private TextField quanField;
+    private TextField districtField;
     @FXML
-    private TextField PhuongField;
+    private TextField streetField;
     @FXML
-    private TextField diaChiField;
+    private TextField numberField;
 
     /**
      * Initializes the controller class.
