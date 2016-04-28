@@ -42,24 +42,29 @@ public class AddAddressController implements Initializable {
     }    
 
     @FXML
-    private void clickedTinhField(MouseEvent event) throws IOException {
+    private void clickedCityField(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
 
     @FXML
-    private void clickedQuanField(MouseEvent event) throws IOException {
+    private void clickedDistrictField(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
 
     @FXML
-    private void clickedPhuongField(MouseEvent event) throws IOException {
+    private void clickedStreetField(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
+    }
+    
+    @FXML
+    private void clickedNumberField(MouseEvent event) {
+        
     }
 
     @FXML
@@ -68,5 +73,7 @@ public class AddAddressController implements Initializable {
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
+
+    
     
 }
