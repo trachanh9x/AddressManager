@@ -51,9 +51,9 @@ public class ListAddressController implements Initializable {
         for (int i =0; i<8;i++){
             Address address = new Address();
             address.setNumber("ababkas" + i);
-            address.setStreet("aiaiaiui" +i);
+            address.setWard("aiaiaiui" +i);
             address.setDistrict("iiiii" + i);
-            address.setCity("uuuu" + i);
+            address.setProvince("uuuu" + i);
             addressData.add(address);
         }
     }

@@ -13,24 +13,24 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Address {
     private SimpleStringProperty number = new SimpleStringProperty();
-    private SimpleStringProperty street = new SimpleStringProperty();
+    private SimpleStringProperty ward = new SimpleStringProperty();
     private SimpleStringProperty district = new SimpleStringProperty();
-    private SimpleStringProperty city = new SimpleStringProperty();
+    private SimpleStringProperty province = new SimpleStringProperty();
 
     public void setNumber(String address) {
         this.number.set(address);
     }
 
-    public void setStreet(String street) {
-        this.street.set(street);
+    public void setWard(String street) {
+        this.ward.set(street);
     }
 
     public void setDistrict(String district) {
         this.district.set(district);
     }
 
-    public void setCity(String city) {
-        this.city.set(city);
+    public void setProvince(String city) {
+        this.province.set(city);
     }
 
     
@@ -40,16 +40,16 @@ public class Address {
         return number.get();
     }
 
-    public String getStreet() {
-        return street.get();
+    public String getWard() {
+        return ward.get();
     }
 
     public String getDistrict() {
         return district.get();
     }
 
-    public String getCity() {
-        return city.get();
+    public String getProvince() {
+        return province.get();
     }
     
     

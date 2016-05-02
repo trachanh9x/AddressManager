@@ -23,11 +23,11 @@ public class ListElementController implements Initializable {
     @FXML
     private Text number;
     @FXML
-    private Text street;
+    private Text ward;
     @FXML
     private Text district;
     @FXML
-    private Text city;
+    private Text province;
     private Address addr = new Address();
     /**
      * Initializes the controller class.
@@ -46,9 +46,9 @@ public class ListElementController implements Initializable {
     public void initData( Address address){
         addr = address;
         number.setText(address.getNumber());
-        street.setText(address.getStreet());
+        ward.setText(address.getWard());
         district.setText(address.getDistrict());
-        city.setText(address.getCity());
+        province.setText(address.getProvince());
     }
     public Address getData(){
         return addr;

@@ -27,7 +27,7 @@
             <Insets left="15.0" />
          </GridPane.margin>
       </Text>
-      <Text fx:id="street" strokeType="OUTSIDE" strokeWidth="0.0" text="auuauuhaoae" wrappingWidth="205.13671875" GridPane.rowIndex="1">
+      <Text fx:id="ward" strokeType="OUTSIDE" strokeWidth="0.0" text="auuauuhaoae" wrappingWidth="205.13671875" GridPane.rowIndex="1">
          <font>
             <Font size="14.0" />
          </font>
@@ -39,7 +39,7 @@
          <GridPane.margin>
             <Insets left="15.0" />
          </GridPane.margin></Text>
-      <Text fx:id="city" strokeType="OUTSIDE" strokeWidth="0.0" text="ajnsaodoadoiao" wrappingWidth="204.13671875" GridPane.rowIndex="3">
+      <Text fx:id="province" strokeType="OUTSIDE" strokeWidth="0.0" text="ajnsaodoadoiao" wrappingWidth="204.13671875" GridPane.rowIndex="3">
          <GridPane.margin>
             <Insets left="15.0" />
          </GridPane.margin></Text>
