@@ -18,12 +18,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -31,6 +36,7 @@ import javafx.scene.layout.GridPane;
  * @author Duc
  */
 public class AddAddressController implements Initializable {
+
     @FXML
     private TextField provinceField;
     @FXML
@@ -42,6 +48,7 @@ public class AddAddressController implements Initializable {
     private Address addr = new Address();
     private ConnectToDatabase con;
     private ResultSet rs;
+
     //public enum Select{PROVINCE,DISTRICT,WARD;}
     /**
      * Initializes the controller class.
@@ -49,60 +56,84 @@ public class AddAddressController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
-     public void initDataAdd( Address address){
+    public void initDataAdd(Address address) {
         addr = address;
         numberField.setText(address.getNumber());
         wardField.setText(address.getWard());
         districtField.setText(address.getDistrict());
         provinceField.setText(address.getProvince());
     }
-     
+
     @FXML
-    private void clickedProvinceField(MouseEvent event) throws IOException {
+    private void clickedProvinceField(MouseEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
         Parent root = loader.load();
         SearchAddressController controller = loader.getController();
-        controller.initDataSearch(addr,1);
+        controller.initDataSearch(addr, 1);
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
 
     @FXML
-    private void clickedDistrictField(MouseEvent event) throws IOException {
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
-       Parent root= loader.load();
-        SearchAddressController controller = loader.getController();
-        controller.initDataSearch(addr,2);
-        Scene scene = new Scene(root);
-        AddressManager.getStage().setScene(scene);
+    private void clickedDistrictField(MouseEvent event) throws IOException, SQLException {
+        if (addr.getProvince() == null) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Cảnh Báo");
+            alert.setHeaderText(null);
+            alert.setContentText("Điền đầy đủ thông tin phía trên");
+            alert.showAndWait();
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
+            Parent root = loader.load();
+            SearchAddressController controller = loader.getController();
+            controller.initDataSearch(addr, 2);
+            Scene scene = new Scene(root);
+            AddressManager.getStage().setScene(scene);
+        }
     }
 
     @FXML
-    private void clickedWardField(MouseEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
-        Parent root= loader.load();
-        SearchAddressController controller = loader.getController();
-        controller.initDataSearch(addr,3);
-        Scene scene = new Scene(root);
-        AddressManager.getStage().setScene(scene);
+    private void clickedWardField(MouseEvent event) throws IOException, SQLException {
+        if (addr.getProvince() == null || addr.getDistrict() == null) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Cảnh Báo");
+            alert.setHeaderText(null);
+            alert.setContentText("Điền đầy đủ thông tin phía trên");
+            alert.showAndWait();
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
+            Parent root = loader.load();
+            SearchAddressController controller = loader.getController();
+            controller.initDataSearch(addr, 3);
+            Scene scene = new Scene(root);
+            AddressManager.getStage().setScene(scene);
+        }
     }
-    
+
     @FXML
     private void clickedNumberField(MouseEvent event) {
-        
+        if (addr.getProvince() == null || addr.getDistrict() == null || addr.getWard() == null) {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Cảnh Báo");
+            alert.setHeaderText(null);
+            alert.setContentText("Điền đầy đủ thông tin phía trên");
+            alert.showAndWait();
+        } else {
+            addr.setNumber(numberField.getText());
+        }
+
     }
 
     @FXML
     private void handleButtonAddAddress2(ActionEvent event) throws IOException, SQLException {
         addr.setNumber(numberField.getText());
-        if (addr.getProvince() == null || addr.getDistrict()== null || addr.getWard() == null || addr.getNumber() == null){
+        if (addr.getProvince() == null || addr.getDistrict() == null || addr.getWard() == null || addr.getNumber() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Bạn nhập thiếu thông tin!");
             alert.showAndWait();
-        }
-        else{
+        } else {
             String sql = "select district.provinceid as provinceid , ward.districtid as districtid , ward.wardid as wardid "
                     + "from district, ward "
                     + "where ward.districtid = district.districtid and ward.name = '" + addr.getWard() + "'";
@@ -115,22 +146,20 @@ public class AddAddressController implements Initializable {
             provinceid = rs.getString("provinceid");
             districtid = rs.getString("districtid");
             wardid = rs.getString("wardid");
-            
+
             sql = "insert into address values(NULL, '"
-                    + provinceid +"','"
+                    + provinceid + "','"
                     + districtid + "','"
                     + wardid + "','"
                     + addr.getNumber() + "');";
             con.update(sql);
             con.close();
-            
+
             Parent root = FXMLLoader.load(getClass().getResource("/am/view/ListAddress.fxml"));
             Scene scene = new Scene(root);
             AddressManager.getStage().setScene(scene);
         }
-        
+
     }
 
-    
-    
 }
