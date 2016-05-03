@@ -5,14 +5,12 @@
  */
 package am.controller;
 
-import am.ConnectToDatabase;
 import am.model.Address;
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -39,41 +37,44 @@ public class SearchAddressController implements Initializable {
     private ListView<String> listPlace = new ListView<String>(); // list show address avaliable
     
     private ObservableList<String> addressData = FXCollections.observableArrayList(); // observable list of address
-    private ConnectToDatabase con;
-    private ResultSet rs;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            addAddressData();  // add data to addresslist.
-            searchTable(addressData);//search address by name.
-        } catch (SQLException ex) {
-            Logger.getLogger(SearchAddressController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        addAddressData();  // add data to addresslist.
+        searchTable(addressData);//search address by name.
     }
 
     public void searchTable(ObservableList<String> data) {
+        
         FilteredList<String> filteredData = new FilteredList<>(data, s -> true); // create filtered list input data.
-        //TextField filterInput = new TextField();
         listPlace.setCellFactory(ComboBoxListCell.forListView(data));
         listPlace.setItems(filteredData);  // add filtered list to list.
-        searchText.textProperty().addListener(obs -> {
-            String filter = searchText.getText();
-            if (filter == null || filter.length() == 0) {
-                filteredData.setPredicate(s -> true);
-            } else {
-                filteredData.setPredicate(s -> s.contains(filter));
-            }
+        searchText.textProperty().addListener((observable, oldValue , newValue) ->{
+            filteredData.setPredicate(s -> {
+                if(newValue == null && newValue.isEmpty())
+                    return true;
+                String lowerCaseFilter = newValue.toLowerCase();
+                if(s.toLowerCase().contains(lowerCaseFilter))
+                    return true;
+                return false;
+            });
         });
-        listPlace.getSelectionModel().getSelectedItem();
-
+        listPlace.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Your action here
+                    
+                    System.out.println("Selected item: " + newValue);
+                }
+            });
+        
     }
 
-    private void addAddressData() throws SQLException {
-        /*addressData.add("2");
+    private void addAddressData() {
+        addressData.add("2");
         addressData.add("3");
         addressData.add("4");
         addressData.add("5");
@@ -82,18 +83,7 @@ public class SearchAddressController implements Initializable {
         addressData.add("8");
         addressData.add("9");
         addressData.add("10");
-        addressData.add("11");*/
-        String sql = "Select name from province order by name";
-        con = new ConnectToDatabase();
-        rs = con.getRS(sql);
-        
-        while(rs.next()){
-            String address;
-            address = rs.getString("name");
-            addressData.add(address);
-            
-        }
-        con.close();
+        addressData.add("11");
 
     }
 
