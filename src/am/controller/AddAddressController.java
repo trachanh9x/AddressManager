@@ -6,6 +6,7 @@
 package am.controller;
 
 import am.AddressManager;
+
 import am.model.Address;
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +19,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 
 /**
  * FXML Controller class
@@ -34,6 +36,7 @@ public class AddAddressController implements Initializable {
     @FXML
     private TextField numberField;
     private Address addr = new Address();
+    //public enum Select{PROVINCE,DISTRICT,WARD;}
     /**
      * Initializes the controller class.
      */
@@ -42,7 +45,7 @@ public class AddAddressController implements Initializable {
         // TODO
     }    
 
-     public void initData( Address address){
+     public void initDataAdd( Address address){
         addr = address;
         numberField.setText(address.getNumber());
         wardField.setText(address.getWard());
@@ -52,21 +55,30 @@ public class AddAddressController implements Initializable {
      
     @FXML
     private void clickedProvinceField(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
+        Parent root = loader.load();
+        SearchAddressController controller = loader.getController();
+        controller.initDataSearch(addr,1);
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
 
     @FXML
     private void clickedDistrictField(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
+       Parent root= loader.load();
+        SearchAddressController controller = loader.getController();
+        controller.initDataSearch(addr,2);
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
 
     @FXML
     private void clickedWardField(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));
+        Parent root= loader.load();
+        SearchAddressController controller = loader.getController();
+        controller.initDataSearch(addr,3);
         Scene scene = new Scene(root);
         AddressManager.getStage().setScene(scene);
     }
