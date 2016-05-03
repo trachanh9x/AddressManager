@@ -6,6 +6,7 @@
 package am.controller;
 
 import am.AddressManager;
+import am.model.Address;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,7 +22,7 @@ import javafx.scene.input.MouseEvent;
 /**
  * FXML Controller class
  *
- * @author VINH
+ * @author Duc
  */
 public class AddAddressController implements Initializable {
     @FXML
@@ -32,7 +33,7 @@ public class AddAddressController implements Initializable {
     private TextField wardField;
     @FXML
     private TextField numberField;
-
+    private Address addr = new Address();
     /**
      * Initializes the controller class.
      */
@@ -41,6 +42,14 @@ public class AddAddressController implements Initializable {
         // TODO
     }    
 
+     public void initData( Address address){
+        addr = address;
+        numberField.setText(address.getNumber());
+        wardField.setText(address.getWard());
+        districtField.setText(address.getDistrict());
+        provinceField.setText(address.getProvince());
+    }
+     
     @FXML
     private void clickedProvinceField(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/am/view/SearchAddress.fxml"));
