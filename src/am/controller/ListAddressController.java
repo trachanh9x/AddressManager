@@ -6,9 +6,12 @@
 package am.controller;
 
 import am.AddressManager;
+import am.ConnectToDatabase;
 import am.model.Address;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +37,8 @@ public class ListAddressController implements Initializable {
     @FXML
     private VBox listAddress;
     private ObservableList<Address> addressData = FXCollections.observableArrayList();
+    private ConnectToDatabase con;
+    private ResultSet rs;
     //private static Address address = new Address();
 
     /**
@@ -41,21 +46,32 @@ public class ListAddressController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        addAddressData();
+        try {
+            // TODO
+            addAddressData();
+        } catch (SQLException ex) {
+            Logger.getLogger(ListAddressController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initListAddress();
     }    
 
-    private void addAddressData(){
+    private void addAddressData() throws SQLException{
+        String sql = "select province.name as province , district.name as district, ward.name as ward , address.number as number "
+                        + "from address, province, district, ward "
+                        + "where address.provinceid = province.provinceid and address.districtid = district.districtid " 
+                        + "and address.wardid = ward.wardid";
         addressData.clear();
-        for (int i =0; i<8;i++){
+        con = new ConnectToDatabase();
+        rs = con.getRS(sql);
+        while (rs.next()){
             Address address = new Address();
-            address.setNumber("ababkas" + i);
-            address.setWard("aiaiaiui" +i);
-            address.setDistrict("iiiii" + i);
-            address.setProvince("uuuu" + i);
+            address.setNumber(rs.getString("number"));
+            address.setWard(rs.getString("ward"));
+            address.setDistrict(rs.getString("district"));
+            address.setProvince(rs.getString("province"));
             addressData.add(address);
         }
+        con.close();
     }
     /*public static Address getAddress(){
         return address;
