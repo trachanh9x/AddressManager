@@ -6,10 +6,13 @@
 package am.controller;
 
 import am.AddressManager;
+import am.ConnectToDatabase;
 
 import am.model.Address;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -36,6 +40,8 @@ public class AddAddressController implements Initializable {
     @FXML
     private TextField numberField;
     private Address addr = new Address();
+    private ConnectToDatabase con;
+    private ResultSet rs;
     //public enum Select{PROVINCE,DISTRICT,WARD;}
     /**
      * Initializes the controller class.
@@ -89,10 +95,39 @@ public class AddAddressController implements Initializable {
     }
 
     @FXML
-    private void handleButtonAddAddress2(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/am/view/AddAddress.fxml"));
-        Scene scene = new Scene(root);
-        AddressManager.getStage().setScene(scene);
+    private void handleButtonAddAddress2(ActionEvent event) throws IOException, SQLException {
+        if (addr.getProvince().isEmpty() || addr.getDistrict().isEmpty() || addr.getWard().isEmpty() || addr.getNumber().isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Bạn nhập thiếu thông tin!");
+            alert.showAndWait();
+        }
+        else{
+            String sql = "select district.provinceid as provinceid , ward.districtid as districtid , ward.wardid as wardid "
+                    + "from district, ward "
+                    + "where ward.districtid = district.districtid and ward.name = '" + addr.getWard() + "'";
+            String provinceid;
+            String districtid;
+            String wardid;
+            con = new ConnectToDatabase();
+            rs = con.getRS(sql);
+            rs.next();
+            provinceid = rs.getString("provinceid");
+            districtid = rs.getString("districtid");
+            wardid = rs.getString("wardid");
+            
+            sql = "insert into address values(NULL, '"
+                    + provinceid +"','"
+                    + districtid + "','"
+                    + wardid + "','"
+                    + addr.getNumber() + "');";
+            con.update(sql);
+            con.close();
+            
+            Parent root = FXMLLoader.load(getClass().getResource("/am/view/ListAddress.fxml"));
+            Scene scene = new Scene(root);
+            AddressManager.getStage().setScene(scene);
+        }
+        
     }
 
     
