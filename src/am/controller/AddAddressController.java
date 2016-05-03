@@ -96,7 +96,8 @@ public class AddAddressController implements Initializable {
 
     @FXML
     private void handleButtonAddAddress2(ActionEvent event) throws IOException, SQLException {
-        if (addr.getProvince().isEmpty() || addr.getDistrict().isEmpty() || addr.getWard().isEmpty() || addr.getNumber().isEmpty()){
+        addr.setNumber(numberField.getText());
+        if (addr.getProvince() == null || addr.getDistrict()== null || addr.getWard() == null || addr.getNumber() == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Bạn nhập thiếu thông tin!");
             alert.showAndWait();
