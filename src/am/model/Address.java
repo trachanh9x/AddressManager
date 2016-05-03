@@ -5,6 +5,7 @@
  */
 package am.model;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -12,11 +13,17 @@ import javafx.beans.property.SimpleStringProperty;
  * @author VINH
  */
 public class Address {
+    private SimpleIntegerProperty addressid = new SimpleIntegerProperty();
     private SimpleStringProperty number = new SimpleStringProperty();
     private SimpleStringProperty ward = new SimpleStringProperty();
     private SimpleStringProperty district = new SimpleStringProperty();
     private SimpleStringProperty province = new SimpleStringProperty();
 
+    public void setAddressid(int addressid) {
+        this.addressid.set(addressid);
+    }
+
+    
     public void setNumber(String address) {
         this.number.set(address);
     }
@@ -35,7 +42,10 @@ public class Address {
 
     
     
-    
+    public int getAddressid() {
+        return addressid.get();
+    }
+
     public String getNumber() {
         return number.get();
     }

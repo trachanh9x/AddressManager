@@ -56,15 +56,15 @@ public class ListAddressController implements Initializable {
     }    
 
     private void addAddressData() throws SQLException{
-        String sql = "select province.name as province , district.name as district, ward.name as ward , address.number as number "
+        String sql = "select address.addressid, province.name as province , district.name as district, ward.name as ward , address.number as number "
                         + "from address, province, district, ward "
-                        + "where address.provinceid = province.provinceid and address.districtid = district.districtid " 
-                        + "and address.wardid = ward.wardid";
+                        + "where address.provinceid = province.provinceid and address.districtid = district.districtid and address.wardid = ward.wardid";
         addressData.clear();
         con = new ConnectToDatabase();
         rs = con.getRS(sql);
         while (rs.next()){
             Address address = new Address();
+            address.setAddressid(rs.getInt("addressid"));
             address.setNumber(rs.getString("number"));
             address.setWard(rs.getString("ward"));
             address.setDistrict(rs.getString("district"));
@@ -88,9 +88,18 @@ public class ListAddressController implements Initializable {
                 pane.getChildren().add(bt);
                 pane.setConstraints(bt, 3, 1);
                 bt.setOnAction(e -> {
-                    listAddress.getChildren().remove(pane);
+                    try {
+                        String sql = "delete from address where addressid = "+ controller.getData().getAddressid();
+                        con = new ConnectToDatabase();
+                        con.update(sql);
+                        con.close();
+                        
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ListAddressController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     addressData.remove(controller.getData());
-                        });
+                    listAddress.getChildren().remove(pane);
+                });
                 listAddress.getChildren().add(pane);
                 
             } catch (IOException ex) {
