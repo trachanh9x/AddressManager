@@ -6,10 +6,13 @@
 package am.controller;
 
 import am.AddressManager;
+import am.ConnectToDatabase;
 import am.controller.AddAddressController;
 import am.model.Address;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,26 +49,23 @@ public class SearchAddressController implements Initializable {
 
     private ObservableList<String> addressData = FXCollections.observableArrayList(); // observable list of address
     private Address addre = new Address();
+    ConnectToDatabase con;
+    ResultSet rs;
     // private enum Select{PROVINCE,DISTRICT,WARD;};
     // Select sel;
-    int sel = 0;
+    private int sel = 0;
 
     /**
      * Initializes the controller class.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initDataSearch(Address address, int flag) throws SQLException {
+        addre = address;
+        sel = flag;
         addAddressData();           // add data to addresslist.
         searchTable(addressData);   //search address by name.
     }
 
-    public void initDataSearch(Address address, int flag) {
-        addre = address;
-        sel = flag;
-    }
-
     public void searchTable(ObservableList<String> data) {
-
         FilteredList<String> filteredData = new FilteredList<>(data, s -> true); // create filtered list input data.
         listPlace.setCellFactory(ComboBoxListCell.forListView(data));
         listPlace.setItems(filteredData);                                         // add filtered list to list.
@@ -82,7 +82,6 @@ public class SearchAddressController implements Initializable {
             });
         });
         listPlace.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            // Your action here
 
             switch (sel) {
                 case 1:
@@ -118,19 +117,50 @@ public class SearchAddressController implements Initializable {
 
     }
 
-    private void addAddressData() {
+    private void addAddressData() throws SQLException {
+        con = new ConnectToDatabase();
+        addressData.clear();
+        String sql;
+        switch (sel) {
+            case 1:
+                sql = "select name from province order by name";
+                rs = con.getRS(sql);
+                while (rs.next()) {
+                    addressData.add(rs.getString("name"));
+                }
+                sql = null;
+                break;
+            case 2:
+                sql = "select district.name from district,province where province.provinceid=district.provinceid and province.name = ";
+                sql = sql.concat("'");
+                sql = sql.concat(addre.getProvince());
+                sql = sql.concat("'");
+                sql = sql.concat(" order by district.name");
 
-        addressData.add("2");
-        addressData.add("3");
-        addressData.add("4");
-        addressData.add("5");
-        addressData.add("6");
-        addressData.add("7");
-        addressData.add("8");
-        addressData.add("9");
-        addressData.add("10");
-        addressData.add("11");
+                rs = con.getRS(sql);
+                while (rs.next()) {
+                    addressData.add(rs.getString("name"));
+                }
+                sql = null;
+                break;
+            case 3:
+                sql = "select ward.name from ward,district where district.districtid=ward.districtid and district.name = ";
+                sql = sql.concat("'");
+                sql = sql.concat(addre.getDistrict());
+                sql = sql.concat("'");
+                sql = sql.concat(" order by ward.name");
 
+                rs = con.getRS(sql);
+                while (rs.next()) {
+                    addressData.add(rs.getString("name"));
+                }
+                sql = null;
+                break;
+            default:
+                break;
+        }
+
+        con.close();
     }
 
     @FXML
@@ -138,4 +168,8 @@ public class SearchAddressController implements Initializable {
         searchText.setText("");
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+    }
 }
