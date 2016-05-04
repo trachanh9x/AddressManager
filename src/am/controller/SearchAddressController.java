@@ -84,18 +84,18 @@ public class SearchAddressController implements Initializable {
         listPlace.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
 
             switch (sel) {
-                case 1:
+                case 1: // click on province field will input province name and reset number,ward,district data
                     addre.setProvince(newValue);
                     addre.setDistrict(null);
                     addre.setWard(null);
                     addre.setNumber(null);
                     break;
-                case 2:
+                case 2: // click on district field will input district name and reset number  and ward data.
                     addre.setDistrict(newValue);
                     addre.setWard(null);
                     addre.setNumber(null);
                     break;
-                case 3:
+                case 3: // click on ward field will input ward name and reset number.
                     addre.setWard(newValue);
                     addre.setNumber(null);
                     break;
@@ -110,7 +110,7 @@ public class SearchAddressController implements Initializable {
                 Logger.getLogger(SearchAddressController.class.getName()).log(Level.SEVERE, null, ex);
             }
             AddAddressController controller = loader.getController();
-            controller.initDataAdd(addre);
+            controller.initDataAdd(addre); // send address data to AddAddressController.java.
             Scene scene = new Scene(root);
             AddressManager.getStage().setScene(scene);
         });
@@ -118,15 +118,15 @@ public class SearchAddressController implements Initializable {
     }
 
     private void addAddressData() throws SQLException {
-        con = new ConnectToDatabase();
+        con = new ConnectToDatabase(); // connect to Database;
         addressData.clear();
         String sql;
-        switch (sel) {
+        switch (sel) {  // sel is number of flag. with 1 as province, 2 as district, 3 as ward.
             case 1:
                 sql = "select name from province order by name";
-                rs = con.getRS(sql);
+                rs = con.getRS(sql);// get rs have province name.
                 while (rs.next()) {
-                    addressData.add(rs.getString("name"));
+                    addressData.add(rs.getString("name"));// add to data
                 }
                 sql = null;
                 break;
@@ -137,9 +137,9 @@ public class SearchAddressController implements Initializable {
                 sql = sql.concat("'");
                 sql = sql.concat(" order by district.name");
 
-                rs = con.getRS(sql);
+                rs = con.getRS(sql); // send sql get rs have district name into province.
                 while (rs.next()) {
-                    addressData.add(rs.getString("name"));
+                    addressData.add(rs.getString("name")); // add to data.
                 }
                 sql = null;
                 break;
@@ -150,9 +150,9 @@ public class SearchAddressController implements Initializable {
                 sql = sql.concat("'");
                 sql = sql.concat(" order by ward.name");
 
-                rs = con.getRS(sql);
+                rs = con.getRS(sql);// send sql get rs have ward name into district .
                 while (rs.next()) {
-                    addressData.add(rs.getString("name"));
+                    addressData.add(rs.getString("name")); // add to data.
                 }
                 sql = null;
                 break;
@@ -165,7 +165,7 @@ public class SearchAddressController implements Initializable {
 
     @FXML
     private void handleButtonX(ActionEvent event) {
-        searchText.setText("");
+        searchText.setText(""); // press button x then reset text field
     }
 
     @Override
