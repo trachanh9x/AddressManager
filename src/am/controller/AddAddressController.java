@@ -133,9 +133,14 @@ public class AddAddressController implements Initializable {
             alert.setContentText("Bạn nhập thiếu thông tin!");
             alert.showAndWait();
         } else {
-            String sql = "select district.provinceid as provinceid , ward.districtid as districtid , ward.wardid as wardid "
+            String sql = "select district.provinceid as provinceid , district.districtid as districtid , ward.wardid as wardid "
                     + "from district, ward "
                     + "where ward.districtid = district.districtid and ward.name = '" + addr.getWard() + "'";
+            if (addr.getWard().equals("None")){
+                sql = "select district.provinceid as provinceid , district.districtid as districtid , ward.wardid as wardid "
+                    + "from district, ward "
+                    + "where district.name = '" + addr.getDistrict() +"' and ward.name = '" + addr.getWard() + "'";
+            }
             String provinceid;
             String districtid;
             String wardid;
