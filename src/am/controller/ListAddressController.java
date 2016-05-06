@@ -32,14 +32,16 @@ import javafx.scene.layout.VBox;
  * FXML Controller class
  *
  * @author VINH
+ * 
+ * controller of main menu interface of program
+ * display all address inserted by user
  */
 public class ListAddressController implements Initializable {
     @FXML
-    private VBox listAddress;
-    private ObservableList<Address> addressData = FXCollections.observableArrayList();
-    private ConnectToDatabase con;
-    private ResultSet rs;
-    //private static Address address = new Address();
+    private VBox listAddress; // Vbox to display address in database
+    private ObservableList<Address> addressData = FXCollections.observableArrayList(); // list to save address inserted in database
+    private ConnectToDatabase con; // to create connecttion to database
+    private ResultSet rs; // to save result set from mysql
 
     /**
      * Initializes the controller class.
@@ -48,47 +50,51 @@ public class ListAddressController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // TODO
-            addAddressData();
+            addAddressData(); // take addresses from database
         } catch (SQLException ex) {
             Logger.getLogger(ListAddressController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        initListAddress();
+        initListAddress(); // display addresses
     }    
-
+    // method take addresses inserted in database
     private void addAddressData() throws SQLException{
+        // string to save sql commant to take addresses
         String sql = "select address.addressid, province.name as province , district.name as district, ward.name as ward , address.number as number "
                         + "from address, province, district, ward "
                         + "where address.provinceid = province.provinceid and address.districtid = district.districtid and address.wardid = ward.wardid";
-        addressData.clear();
-        con = new ConnectToDatabase();
-        rs = con.getRS(sql);
+        addressData.clear(); // reset list address
+        con = new ConnectToDatabase(); // connect to database
+        rs = con.getRS(sql); // get result set
+        // take data from result set to addressData list
         while (rs.next()){
-            Address address = new Address();
+            Address address = new Address(); // creat new address variable
             address.setAddressid(rs.getInt("addressid"));
             address.setNumber(rs.getString("number"));
             address.setWard(rs.getString("ward"));
             address.setDistrict(rs.getString("district"));
             address.setProvince(rs.getString("province"));
-            addressData.add(address);
+            addressData.add(address); // add address variable to list
         }
-        con.close();
+        con.close(); // close connection
     }
-    /*public static Address getAddress(){
-        return address;
-    }*/
+    
+    // method to display address list
     private void initListAddress() {
-        listAddress.getChildren().clear();
+        listAddress.getChildren().clear(); // clear Vbox
         for (int i = 0; i<addressData.size() ;i++){
             try {
+                // load fxml to a new Grid pane
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/ListElement.fxml"));
                 GridPane pane = loader.load();
-                ListElementController controller = loader.getController();
-                controller.initData(addressData.get(i));
-                Button bt = new Button("X");
+                ListElementController controller = loader.getController(); // get Controller of fxml loaded
+                controller.initData(addressData.get(i)); // insert address variable to pane
+                Button bt = new Button("X"); // create button to delete address
                 pane.getChildren().add(bt);
                 pane.setConstraints(bt, 3, 1);
+                // process when user clicked X Button
                 bt.setOnAction(e -> {
                     try {
+                        // sql commant to delete address
                         String sql = "delete from address where addressid = "+ controller.getData().getAddressid();
                         con = new ConnectToDatabase();
                         con.update(sql);
@@ -97,10 +103,10 @@ public class ListAddressController implements Initializable {
                     } catch (SQLException ex) {
                         Logger.getLogger(ListAddressController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    addressData.remove(controller.getData());
-                    listAddress.getChildren().remove(pane);
+                    addressData.remove(controller.getData()); // remove address variable from list
+                    listAddress.getChildren().remove(pane); // remove address variable's pane from Vbox
                 });
-                listAddress.getChildren().add(pane);
+                listAddress.getChildren().add(pane); // add pane to VBox to display address variable
                 
             } catch (IOException ex) {
                 Logger.getLogger(ListAddressController.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,7 +114,7 @@ public class ListAddressController implements Initializable {
         }
         
     }
-
+    // change scene to add address menu when user clicked button addAddress
     @FXML
     private void handleButtonAddAddress(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/am/view/AddAddress.fxml"));

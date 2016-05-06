@@ -18,38 +18,36 @@ import javafx.scene.text.Text;
  * FXML Controller class
  *
  * @author VINH
+ * controller of each address pane display in main menu
  */
 public class ListElementController implements Initializable {
     @FXML
-    private Text number;
+    private Text number; //text to display number
     @FXML
-    private Text ward;
+    private Text ward;  //text to display ward
     @FXML
-    private Text district;
+    private Text district; //text to display district
     @FXML
-    private Text province;
-    private Address addr = new Address();
+    private Text province; //text to display province
+    private Address addr = new Address(); // create new address variable
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
         
-        /*address = ListAddressController.getAddress();
-        address.setText(address.getDiaChi());
-        street.setText(address.getPhuong());
-        district.setText(address.getQuan());
-        city.setText(address.getTinh());*/
         
     }
+    // init address Data receive from main menu
     public void initData( Address address){
-        addr = address;
+        addr = address; // save address variable received
+        // display address's fields
         number.setText(address.getNumber());
         ward.setText(address.getWard());
         district.setText(address.getDistrict());
         province.setText(address.getProvince());
     }
+    // return address variable
     public Address getData(){
         return addr;
     }

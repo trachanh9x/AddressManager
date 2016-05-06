@@ -124,41 +124,46 @@ public class AddAddressController implements Initializable {
         }
 
     }
-
+// process when user clicked button to add new address
     @FXML
     private void handleButtonAddAddress2(ActionEvent event) throws IOException, SQLException {
-        addr.setNumber(numberField.getText());
+        addr.setNumber(numberField.getText()); // get value of address's number
+        //check if address has null field
         if (addr.getProvince() == null || addr.getDistrict() == null || addr.getWard() == null || addr.getNumber() == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Bạn nhập thiếu thông tin!");
             alert.showAndWait();
         } else {
+            // sql commant to take id of address fields
             String sql = "select district.provinceid as provinceid , district.districtid as districtid , ward.wardid as wardid "
                     + "from district, ward "
                     + "where ward.districtid = district.districtid and ward.name = '" + addr.getWard() + "'";
+            // rewrite sql commant if address don't have ward
             if (addr.getWard().equals("None")){
                 sql = "select district.provinceid as provinceid , district.districtid as districtid , ward.wardid as wardid "
                     + "from district, ward "
                     + "where district.name = '" + addr.getDistrict() +"' and ward.name = '" + addr.getWard() + "'";
             }
-            String provinceid;
+            String provinceid; 
             String districtid;
             String wardid;
-            con = new ConnectToDatabase();
-            rs = con.getRS(sql);
+            con = new ConnectToDatabase(); // connect to database
+            rs = con.getRS(sql); // take the result set of sql commant
             rs.next();
+            //take id of province, district and ward from result set
             provinceid = rs.getString("provinceid");
             districtid = rs.getString("districtid");
             wardid = rs.getString("wardid");
-
+            // sql commant to insert new address to database
             sql = "insert into address values(NULL, '"
                     + provinceid + "','"
                     + districtid + "','"
                     + wardid + "','"
                     + addr.getNumber() + "');";
             con.update(sql);
-            con.close();
-
+            con.close(); // close connection to database
+            
+            //turn back to List Address scene
             Parent root = FXMLLoader.load(getClass().getResource("/am/view/ListAddress.fxml"));
             Scene scene = new Scene(root);
             AddressManager.getStage().setScene(scene);
