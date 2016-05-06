@@ -48,12 +48,13 @@ public class AddAddressController implements Initializable {
     private Address addr = new Address();// create model address.
     private ConnectToDatabase con;
     private ResultSet rs;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
+
     }
 
     public void initDataAdd(Address address) { // assigt data to AddAddress.
@@ -104,9 +105,9 @@ public class AddAddressController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/SearchAddress.fxml"));// load scene SearchAddress.
             Parent root = loader.load();
             SearchAddressController controller = loader.getController();
-            controller.initDataSearch(addr, 3);
             Scene scene = new Scene(root);
             AddressManager.getStage().setScene(scene);
+            controller.initDataSearch(addr, 3);
         }
     }
 
