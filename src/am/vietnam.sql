@@ -11985,7 +11985,8 @@ INSERT INTO `ward` (`wardid`, `name`, `type`, `location`, `districtid`) VALUES
 ('32242', 'Viên An', 'Xã', '8 39 22N, 104 50 59E', '973'),
 ('32244', 'Rạch Gốc', 'Thị Trấn', '', '973'),
 ('32245', 'Tân Ân', 'Xã', '8 38 45N, 105 03 22E', '973'),
-('32248', 'Đất Mũi', 'Xã', '8 36 41N, 104 47 12E', '973');
+('32248', 'Đất Mũi', 'Xã', '8 36 41N, 104 47 12E', '973'),
+('32249', 'None', 'Xã', '', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
