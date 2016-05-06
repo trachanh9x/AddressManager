@@ -62,7 +62,7 @@ public class SearchAddressController implements Initializable {
         addre = address;
         sel = flag;                 // sel = flag  sel use to chose what data will be input to address data.
         addAddressData();           // add data to addresslist.
-        if (addressData.isEmpty()) {
+        if (addressData.isEmpty()) {// if no have ward value. program will be call dialog and back to AddAddress.fxml and wardfield= none.
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Cảnh Báo");
                     alert.setHeaderText(null);
