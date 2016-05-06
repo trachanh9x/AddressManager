@@ -43,12 +43,12 @@ import javafx.stage.Stage;
 public class SearchAddressController implements Initializable {
 
     @FXML
-    private TextField searchText;  // text fiel input name of address
+    private TextField searchText;  // text fiel input name of address.
     @FXML
-    private ListView<String> listPlace = new ListView<String>(); // list show address avaliable
+    private ListView<String> listPlace = new ListView<String>(); // list show address avaliable.
 
-    private ObservableList<String> addressData = FXCollections.observableArrayList(); // observable list of address
-    private Address addre = new Address();
+    private ObservableList<String> addressData = FXCollections.observableArrayList(); // observable list of address.
+    private Address addre = new Address();// create model address.
     ConnectToDatabase con;
     ResultSet rs;
     // private enum Select{PROVINCE,DISTRICT,WARD;};
@@ -60,7 +60,7 @@ public class SearchAddressController implements Initializable {
      */
     public void initDataSearch(Address address, int flag) throws SQLException {
         addre = address;
-        sel = flag;
+        sel = flag;                 // sel = flag  sel use to chose what data will be input to address data.
         addAddressData();           // add data to addresslist.
         searchTable(addressData);   //search address by name.
     }
@@ -82,27 +82,27 @@ public class SearchAddressController implements Initializable {
             });
         });
         listPlace.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-
+            // khi chon vao 1 item trong list view.
             switch (sel) {
-                case 1: // click on province field will input province name and reset number,ward,district data
-                    addre.setProvince(newValue);
-                    addre.setDistrict(null);
-                    addre.setWard(null);
-                    addre.setNumber(null);
+                case 1: // click on province field will input province name and reset number,ward,district data.
+                    addre.setProvince(newValue);// set province = newvalue.
+                    addre.setDistrict(null); // set district =null , district field will empty.
+                    addre.setWard(null);// set ward =null , ward field will empty.
+                    addre.setNumber(null);// set number =null , number field will empty.
                     break;
                 case 2: // click on district field will input district name and reset number  and ward data.
-                    addre.setDistrict(newValue);
-                    addre.setWard(null);
-                    addre.setNumber(null);
+                    addre.setDistrict(newValue);// set district = newvalue, districtfield will display newvalue
+                    addre.setWard(null);// set ward =null , ward field will empty.
+                    addre.setNumber(null);// set number =null , number field will empty.
                     break;
                 case 3: // click on ward field will input ward name and reset number.
-                    addre.setWard(newValue);
-                    addre.setNumber(null);
+                    addre.setWard(newValue);// set ward= newvalue, ward will display newvalue
+                    addre.setNumber(null);// set number =null , number field will empty.
                     break;
                 default:
                     break;
             }
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/AddAddress.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/AddAddress.fxml")); // load scene AddAddress.
             Parent root = null;
             try {
                 root = loader.load();
@@ -118,12 +118,12 @@ public class SearchAddressController implements Initializable {
     }
 
     private void addAddressData() throws SQLException {
-        con = new ConnectToDatabase(); // connect to Database;
-        addressData.clear();
+        con = new ConnectToDatabase(); // connect to Database.
+        addressData.clear();// clear addressData.
         String sql;
         switch (sel) {  // sel is number of flag. with 1 as province, 2 as district, 3 as ward.
             case 1:
-                sql = "select name from province order by name";
+                sql = "select name from province order by name";// sql question
                 rs = con.getRS(sql);// get rs have province name.
                 while (rs.next()) {
                     addressData.add(rs.getString("name"));// add to data
@@ -135,7 +135,7 @@ public class SearchAddressController implements Initializable {
                 sql = sql.concat("'");
                 sql = sql.concat(addre.getProvince());
                 sql = sql.concat("'");
-                sql = sql.concat(" order by district.name");
+                sql = sql.concat(" order by district.name");// sql question
 
                 rs = con.getRS(sql); // send sql get rs have district name into province.
                 while (rs.next()) {
@@ -148,19 +148,19 @@ public class SearchAddressController implements Initializable {
                 sql = sql.concat("'");
                 sql = sql.concat(addre.getDistrict());
                 sql = sql.concat("'");
-                sql = sql.concat(" order by ward.name");
+                sql = sql.concat(" order by ward.name");// sql question
 
                 rs = con.getRS(sql);// send sql get rs have ward name into district .
                 while (rs.next()) {
                     addressData.add(rs.getString("name")); // add to data.
                 }
-                sql = null;
+                sql = null;// reset sql question.
                 break;
             default:
                 break;
         }
 
-        con.close();
+        con.close();// close connect to database.
     }
 
     @FXML
