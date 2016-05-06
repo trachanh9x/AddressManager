@@ -28,6 +28,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxListCell;
@@ -51,8 +52,7 @@ public class SearchAddressController implements Initializable {
     private Address addre = new Address();// create model address.
     ConnectToDatabase con;
     ResultSet rs;
-    // private enum Select{PROVINCE,DISTRICT,WARD;};
-    // Select sel;
+    private int count = 0;
     private int sel = 0;
 
     /**
@@ -62,11 +62,32 @@ public class SearchAddressController implements Initializable {
         addre = address;
         sel = flag;                 // sel = flag  sel use to chose what data will be input to address data.
         addAddressData();           // add data to addresslist.
-        searchTable(addressData);   //search address by name.
+        if (addressData.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Cảnh Báo");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Huyện này không có phường!");
+                    alert.showAndWait();
+                    addre.setWard("None");
+                    addre.setNumber(null);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/AddAddress.fxml")); // load scene AddAddress.
+                    Parent root = null;
+                    try {
+                        root = loader.load();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SearchAddressController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    AddAddressController controller = loader.getController();
+                    controller.initDataAdd(addre); // send address data to AddAddressController.java.
+                    Scene scene = new Scene(root);
+                    AddressManager.getStage().setScene(scene);
+                }
+        else searchTable(addressData);   //search address by name.
     }
 
     public void searchTable(ObservableList<String> data) {
         FilteredList<String> filteredData = new FilteredList<>(data, s -> true); // create filtered list input data.
+
         listPlace.setCellFactory(ComboBoxListCell.forListView(data));
         listPlace.setItems(filteredData);                                         // add filtered list to list.
         searchText.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -83,6 +104,7 @@ public class SearchAddressController implements Initializable {
         });
         listPlace.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
             // khi chon vao 1 item trong list view.
+
             switch (sel) {
                 case 1: // click on province field will input province name and reset number,ward,district data.
                     addre.setProvince(newValue);// set province = newvalue.
@@ -98,8 +120,6 @@ public class SearchAddressController implements Initializable {
                 case 3: // click on ward field will input ward name and reset number.
                     addre.setWard(newValue);// set ward= newvalue, ward will display newvalue
                     addre.setNumber(null);// set number =null , number field will empty.
-                    break;
-                default:
                     break;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/AddAddress.fxml")); // load scene AddAddress.
@@ -118,6 +138,7 @@ public class SearchAddressController implements Initializable {
     }
 
     private void addAddressData() throws SQLException {
+        count = 0;
         con = new ConnectToDatabase(); // connect to Database.
         addressData.clear();// clear addressData.
         String sql;
@@ -126,7 +147,8 @@ public class SearchAddressController implements Initializable {
                 sql = "select name from province order by name";// sql question
                 rs = con.getRS(sql);// get rs have province name.
                 while (rs.next()) {
-                    addressData.add(rs.getString("name"));// add to data
+                    addressData.add(rs.getString("name"));// add to data.
+                    //count++;
                 }
                 sql = null;
                 break;
@@ -138,8 +160,10 @@ public class SearchAddressController implements Initializable {
                 sql = sql.concat(" order by district.name");// sql question
 
                 rs = con.getRS(sql); // send sql get rs have district name into province.
+
                 while (rs.next()) {
                     addressData.add(rs.getString("name")); // add to data.
+                    //count++;
                 }
                 sql = null;
                 break;
@@ -151,9 +175,12 @@ public class SearchAddressController implements Initializable {
                 sql = sql.concat(" order by ward.name");// sql question
 
                 rs = con.getRS(sql);// send sql get rs have ward name into district .
+
                 while (rs.next()) {
                     addressData.add(rs.getString("name")); // add to data.
+                    //count++;
                 }
+                
                 sql = null;// reset sql question.
                 break;
             default:
