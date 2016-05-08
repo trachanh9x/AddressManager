@@ -30,6 +30,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.util.Callback;
 
 /**
@@ -94,15 +95,18 @@ public class SearchAddressController implements Initializable {
 
     public void searchTable(ObservableList<Place> data) {
         FilteredList<Place> filteredData = new FilteredList<>(data, s -> true); // create filtered list input data.
-
+        //listPlace.setCellFactory(ComboBoxListCell.forListView(data));
         listPlace.setCellFactory(new Callback<ListView<Place>, ListCell<Place>> () {
             @Override
             public ListCell<Place> call(ListView<Place> param) {
                 ListCell<Place> cell = new ListCell<Place>(){
                     @Override
-                    protected void updateItem(Place place, boolean bln){
-                        super.updateItem(place, bln);
-                        if (place != null){
+                    protected void updateItem(Place place, boolean empty){
+                        super.updateItem(place, empty);
+                        if (empty){
+                            setText(null);
+                        }
+                        else if (place != null){
                             setText(place.getName());
                         }
                     }
