@@ -17,9 +17,9 @@ import javafx.beans.property.SimpleStringProperty;
 public class Address {
     private SimpleIntegerProperty addressid = new SimpleIntegerProperty(); // address's id in database
     private SimpleStringProperty number = new SimpleStringProperty(); // number field save : home number, street ...
-    private SimpleStringProperty ward = new SimpleStringProperty(); //  ward name
-    private SimpleStringProperty district = new SimpleStringProperty(); // district name
-    private SimpleStringProperty province = new SimpleStringProperty(); // province name
+    private Place ward = new Place(); //  ward name
+    private Place district = new Place();
+    private Place province = new Place();
     
     // methods to insert information of address
     // set address's id
@@ -33,18 +33,21 @@ public class Address {
     }
     
     // set address's ward
-    public void setWard(String street) {
-        this.ward.set(street);
+    public void setWard(Place ward) {
+        this.ward = ward;
     }
-    // set address's district
-    public void setDistrict(String district) {
-        this.district.set(district);
+    
+    //set address's district
+    public void setDistrict(Place district) {
+        this.district = district;
     }
-
-    // set address's province
-    public void setProvince(String city) {
-        this.province.set(city);
+    
+    //set address's district
+    public void setProvince(Place province) {
+        this.province = province;
     }
+    
+    
 
     
     // methods to get information of address
@@ -58,19 +61,19 @@ public class Address {
         return number.get();
     }
     // get address's ward
-    public String getWard() {
-        return ward.get();
-    }
-    // get address's district
-    public String getDistrict() {
-        return district.get();
-    }
-    // get address's province
-    public String getProvince() {
-        return province.get();
+
+    public Place getWard() {
+        return ward;
     }
     
+    //get address's district
+    public Place getDistrict() {
+        return district;
+    }
     
-   
-    
+    //get address's province
+    public Place getProvince() {
+        return province;
+    }
+       
 }

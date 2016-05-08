@@ -7,8 +7,8 @@ package am.controller;
 
 import am.AddressManager;
 import am.ConnectToDatabase;
-import am.controller.AddAddressController;
 import am.model.Address;
+import am.model.Place;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -16,8 +16,6 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,12 +27,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ComboBoxListCell;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -46,9 +42,9 @@ public class SearchAddressController implements Initializable {
     @FXML
     private TextField searchText;  // text fiel input name of address.
     @FXML
-    private ListView<String> listPlace = new ListView<String>(); // list show address avaliable.
+    private ListView<Place> listPlace = new ListView<Place>(); // list show address avaliable.
 
-    private ObservableList<String> addressData = FXCollections.observableArrayList(); // observable list of address.
+    private ObservableList<Place> addressData = FXCollections.observableArrayList(); // observable list of address.
     private Address addre = new Address();// create model address.
     ConnectToDatabase con;
     ResultSet rs;
@@ -68,7 +64,18 @@ public class SearchAddressController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Huyện này không có phường!");
                     alert.showAndWait();
-                    addre.setWard("None");
+                    
+                    String sql = "select * from ward where name = 'None'";
+                    Place ward = new Place();
+                    con = new ConnectToDatabase();
+                    rs = con.getRS(sql);
+                    rs.next();
+                    ward.setId(rs.getString("wardid"));
+                    ward.setName(rs.getString("name"));
+                    ward.setType(rs.getString("type"));
+                    con.close();
+                    
+                    addre.setWard(ward);
                     addre.setNumber(null);
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/am/view/AddAddress.fxml")); // load scene AddAddress.
                     Parent root = null;
@@ -85,10 +92,25 @@ public class SearchAddressController implements Initializable {
         else searchTable(addressData);   //search address by name.
     }
 
-    public void searchTable(ObservableList<String> data) {
-        FilteredList<String> filteredData = new FilteredList<>(data, s -> true); // create filtered list input data.
+    public void searchTable(ObservableList<Place> data) {
+        FilteredList<Place> filteredData = new FilteredList<>(data, s -> true); // create filtered list input data.
 
-        listPlace.setCellFactory(ComboBoxListCell.forListView(data));
+        //listPlace.setCellFactory(ComboBoxListCell.forListView(data));
+        listPlace.setCellFactory(new Callback<ListView<Place>, ListCell<Place>> () {
+            @Override
+            public ListCell<Place> call(ListView<Place> param) {
+                ListCell<Place> cell = new ListCell<Place>(){
+                    @Override
+                    protected void updateItem(Place place, boolean bln){
+                        super.updateItem(place, bln);
+                        if (place != null){
+                            setText(place.getName());
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
         listPlace.setItems(filteredData);                                         // add filtered list to list.
         searchText.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(s -> {
@@ -96,13 +118,13 @@ public class SearchAddressController implements Initializable {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
-                if (s.toLowerCase().contains(lowerCaseFilter)) {
+                if (s.getName().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false;
             });
         });
-        listPlace.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
+        listPlace.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Place> observable, Place oldValue, Place newValue) -> {
             // khi chon vao 1 item trong list view.
 
             switch (sel) {
@@ -138,47 +160,59 @@ public class SearchAddressController implements Initializable {
     }
 
     private void addAddressData() throws SQLException {
+        Place tmp;
         count = 0;
         con = new ConnectToDatabase(); // connect to Database.
         addressData.clear();// clear addressData.
         String sql;
         switch (sel) {  // sel is number of flag. with 1 as province, 2 as district, 3 as ward.
             case 1:
-                sql = "select name from province order by name";// sql question
+                sql = "select * from province order by name";// sql question
                 rs = con.getRS(sql);// get rs have province name.
                 while (rs.next()) {
-                    addressData.add(rs.getString("name"));// add to data.
+                    tmp = new Place();
+                    tmp.setId(rs.getString("provinceid"));
+                    tmp.setName(rs.getString("name"));
+                    tmp.setType(rs.getString("type"));
+                    addressData.add(tmp);// add to data.
                     //count++;
                 }
                 sql = null;
                 break;
             case 2:
-                sql = "select district.name from district,province where province.provinceid=district.provinceid and province.name = ";
+                sql = "select * from district where provinceid = ";
                 sql = sql.concat("'");
-                sql = sql.concat(addre.getProvince());
+                sql = sql.concat(addre.getProvince().getId());
                 sql = sql.concat("'");
                 sql = sql.concat(" order by district.name");// sql question
 
                 rs = con.getRS(sql); // send sql get rs have district name into province.
 
                 while (rs.next()) {
-                    addressData.add(rs.getString("name")); // add to data.
+                    tmp = new Place();
+                    tmp.setId(rs.getString("districtid"));
+                    tmp.setName(rs.getString("name"));
+                    tmp.setType(rs.getString("type"));
+                    addressData.add(tmp); // add to data.
                     //count++;
                 }
                 sql = null;
                 break;
             case 3:
-                sql = "select ward.name from ward,district where district.districtid=ward.districtid and district.name = ";
+                sql = "select * from ward where districtid = ";
                 sql = sql.concat("'");
-                sql = sql.concat(addre.getDistrict());
+                sql = sql.concat(addre.getDistrict().getId());
                 sql = sql.concat("'");
                 sql = sql.concat(" order by ward.name");// sql question
 
                 rs = con.getRS(sql);// send sql get rs have ward name into district .
 
                 while (rs.next()) {
-                    addressData.add(rs.getString("name")); // add to data.
-                    //count++;
+                    tmp = new Place();
+                    tmp.setId(rs.getString("wardid"));
+                    tmp.setName(rs.getString("name"));
+                    tmp.setType(rs.getString("type"));
+                    addressData.add(tmp); // add to data.
                 }
                 
                 sql = null;// reset sql question.

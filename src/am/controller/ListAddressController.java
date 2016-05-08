@@ -8,6 +8,7 @@ package am.controller;
 import am.AddressManager;
 import am.ConnectToDatabase;
 import am.model.Address;
+import am.model.Place;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
@@ -25,7 +26,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -59,7 +59,7 @@ public class ListAddressController implements Initializable {
     // method take addresses inserted in database
     private void addAddressData() throws SQLException{
         // string to save sql commant to take addresses
-        String sql = "select address.addressid, province.name as province , district.name as district, ward.name as ward , address.number as number "
+        String sql = "select * "
                         + "from address, province, district, ward "
                         + "where address.provinceid = province.provinceid and address.districtid = district.districtid and address.wardid = ward.wardid";
         addressData.clear(); // reset list address
@@ -68,11 +68,27 @@ public class ListAddressController implements Initializable {
         // take data from result set to addressData list
         while (rs.next()){
             Address address = new Address(); // creat new address variable
-            address.setAddressid(rs.getInt("addressid"));
-            address.setNumber(rs.getString("number"));
-            address.setWard(rs.getString("ward"));
-            address.setDistrict(rs.getString("district"));
-            address.setProvince(rs.getString("province"));
+            Place ward = new Place();
+            Place district = new Place();
+            Place province = new Place();
+            address.setAddressid(rs.getInt("address.addressid"));
+            address.setNumber(rs.getString("address.number"));
+            //get information of ward
+            ward.setId(rs.getString("ward.wardid"));
+            ward.setName(rs.getString("ward.name"));
+            ward.setType(rs.getString("ward.type"));
+            //get information of district
+            district.setId(rs.getString("district.districtid"));
+            district.setName(rs.getString("district.name"));
+            district.setType(rs.getString("district.type"));
+            //get information of province
+            province.setId(rs.getString("province.provinceid"));
+            province.setName(rs.getString("province.name"));
+            province.setType(rs.getString("province.type"));
+            
+            address.setWard(ward);
+            address.setDistrict(district);
+            address.setProvince(province);
             addressData.add(address); // add address variable to list
         }
         con.close(); // close connection

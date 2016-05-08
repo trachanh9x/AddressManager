@@ -5,13 +5,11 @@
  */
 package am.controller;
 
-import am.AddressManager;
 import am.model.Address;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
 
 /**
@@ -43,9 +41,9 @@ public class ListElementController implements Initializable {
         addr = address; // save address variable received
         // display address's fields
         number.setText(address.getNumber());
-        ward.setText(address.getWard());
-        district.setText(address.getDistrict());
-        province.setText(address.getProvince());
+        ward.setText(address.getWard().getName());
+        district.setText(address.getDistrict().getName());
+        province.setText(address.getProvince().getName());
     }
     // return address variable
     public Address getData(){

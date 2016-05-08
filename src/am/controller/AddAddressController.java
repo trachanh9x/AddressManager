@@ -18,17 +18,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -60,9 +55,18 @@ public class AddAddressController implements Initializable {
     public void initDataAdd(Address address) { // assigt data to AddAddress.
         addr = address;
         numberField.setText(address.getNumber());// show Number of Address from address by numberfield.
-        wardField.setText(address.getWard());// show Ward of Address from address by wardfield.
-        districtField.setText(address.getDistrict());// show District of Address from address by districtfield.
-        provinceField.setText(address.getProvince());// show Province of Address from address by provincefield.
+        if (address.getWard()!= null)
+            wardField.setText(address.getWard().getName());// show Ward of Address from address by wardfield.
+        else 
+            wardField.setText(null);
+        if (address.getDistrict() != null)
+            districtField.setText(address.getDistrict().getName());// show District of Address from address by districtfield.
+        else
+            districtField.setText(null);
+        if (address.getProvince()!= null)
+            provinceField.setText(address.getProvince().getName());// show Province of Address from address by provincefield.
+        else
+            provinceField.setText(null);
     }
 
     @FXML
@@ -134,39 +138,38 @@ public class AddAddressController implements Initializable {
             alert.setContentText("Bạn nhập thiếu thông tin!");
             alert.showAndWait();
         } else {
-            // sql commant to take id of address fields
-            String sql = "select district.provinceid as provinceid , district.districtid as districtid , ward.wardid as wardid "
-                    + "from district, ward "
-                    + "where ward.districtid = district.districtid and ward.name = '" + addr.getWard() + "'";
-            // rewrite sql commant if address don't have ward
-            if (addr.getWard().equals("None")){
-                sql = "select district.provinceid as provinceid , district.districtid as districtid , ward.wardid as wardid "
-                    + "from district, ward "
-                    + "where district.name = '" + addr.getDistrict() +"' and ward.name = '" + addr.getWard() + "'";
-            }
-            String provinceid; 
-            String districtid;
-            String wardid;
+            
             con = new ConnectToDatabase(); // connect to database
-            rs = con.getRS(sql); // take the result set of sql commant
-            rs.next();
-            //take id of province, district and ward from result set
-            provinceid = rs.getString("provinceid");
-            districtid = rs.getString("districtid");
-            wardid = rs.getString("wardid");
-            // sql commant to insert new address to database
-            sql = "insert into address values(NULL, '"
-                    + provinceid + "','"
-                    + districtid + "','"
-                    + wardid + "','"
-                    + addr.getNumber() + "');";
-            con.update(sql);
+            // check if database had this address
+            String sql = "select * from address "
+                    + "where provinceid = '"+ addr.getProvince().getId() + "' "
+                    + "and districtid = '" + addr.getDistrict().getId() + "'"
+                    + "and wardid = '" + addr.getWard().getId() + "'"
+                    + "and number = '"+ addr.getNumber() + "';";
+            rs = con.getRS(sql);
+            if (rs.next()){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Địa chỉ đã tồn tại!");
+                alert.showAndWait();
+            }
+            // if this is a new address -> insert it to database
+            else{
+               // sql commant to insert new address to database
+                sql = "insert into address values(NULL, '"
+                        + addr.getProvince().getId() + "','"
+                        + addr.getDistrict().getId() + "','"
+                        + addr.getWard().getId() + "','"
+                        + addr.getNumber() + "');";
+                con.update(sql);
+                
+
+                //turn back to List Address scene
+                Parent root = FXMLLoader.load(getClass().getResource("/am/view/ListAddress.fxml"));
+                Scene scene = new Scene(root);
+                AddressManager.getStage().setScene(scene); 
+            }
             con.close(); // close connection to database
             
-            //turn back to List Address scene
-            Parent root = FXMLLoader.load(getClass().getResource("/am/view/ListAddress.fxml"));
-            Scene scene = new Scene(root);
-            AddressManager.getStage().setScene(scene);
         }
 
     }
