@@ -17,9 +17,9 @@ import javafx.beans.property.SimpleStringProperty;
 public class Address {
     private SimpleIntegerProperty addressid = new SimpleIntegerProperty(); // address's id in database
     private SimpleStringProperty number = new SimpleStringProperty(); // number field save : home number, street ...
-    private Place ward = new Place(); //  ward name
-    private Place district = new Place();
-    private Place province = new Place();
+    private Place ward;
+    private Place district;
+    private Place province;
     
     // methods to insert information of address
     // set address's id

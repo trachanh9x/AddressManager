@@ -49,7 +49,10 @@ public class AddAddressController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        numberField.setText(null);
+        wardField.setText(null);
+        districtField.setText(null);
+        provinceField.setText(null);
     }
 
     public void initDataAdd(Address address) { // assigt data to AddAddress.
