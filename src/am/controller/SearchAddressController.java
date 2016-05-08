@@ -113,7 +113,7 @@ public class SearchAddressController implements Initializable {
         listPlace.setItems(filteredData);              // add filtered list to list.
         searchText.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredData.setPredicate(s -> {
-                if (newValue == null && newValue.isEmpty()) {
+                if (newValue == null || newValue.isEmpty()) {
                     return true;
                 }
                 String lowerCaseFilter = newValue.toLowerCase();
