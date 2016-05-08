@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
  * FXML Controller class
  *
  * @author VINH
- * controller of each address pane display in main menu
+ * controller of each address pane display  in main menu
  */
 public class ListElementController implements Initializable {
     @FXML
